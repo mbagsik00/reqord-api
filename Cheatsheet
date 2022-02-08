@@ -1,0 +1,45 @@
+Install CLI
+$ npm install -f @nestjs/cli
+
+Create new project
+nest new <project_name>
+
+CRUD generator
+Generates all the NestJS building blocks (module, service, controller classes) but also an entity class, DTO classes as well as the testing files
+$ nest g resource users
+
+Create new module
+$ nest g module users
+$ nest g controller users
+$ nest g service users
+
+Install swaggerUI
+$ npm install --save @nestjs/swagger swagger-ui-express
+
+NextJS Crud
+$ npm install --save @nestjs/typeorm typeorm
+$ npm i @nestjsx/crud class-transformer class-validator
+$ npm i @nestjsx/crud-typeorm
+
+Notes:
+1. TypeOrm automatically create database table and columns
+   1. How to deal with startup
+   2. Database migration
+   3. Database username and password
+
+Sample ormconfig
+   export = {
+      type: 'postgres' as const,
+      url: process.env.DATABASE_URL,
+      entities: ['src/server/app/**/*.entity.ts'],
+      migrations: ['src/server/migration/*.{ts,js}'],
+      cli: {
+         migrationsDir: 'src/server/migration',
+      },
+      extra: {
+         ssl:
+            process.env.NODE_ENV === 'production'
+            ? { rejectUnauthorized: false }
+            : false,
+      },
+   };
