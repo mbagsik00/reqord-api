@@ -1,37 +1,34 @@
-import { Controller } from '@nestjs/common';
-import { Crud, CrudController } from '@nestjsx/crud';
-import { Project } from './project.entity';
+import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
 import { ProjectsService } from './projects.service';
+import { CreateProjectDto } from './dto/create-project.dto';
+import { UpdateProjectDto } from './dto/update-project.dto';
 
-@Crud({
-  model: {
-    type: Project
-  }
-})
 @Controller('projects')
-export class ProjectsController implements CrudController<Project> {
-  constructor(public service: ProjectsService) {}
+export class ProjectsController {
+  constructor(private readonly projectsService: ProjectsService) {}
 
-  // To get request details
-  // @Request() req:Request
+  @Post()
+  create(@Body() createProjectDto: CreateProjectDto) {
+    return this.projectsService.create(createProjectDto);
+  }
 
-  // To pass params
-  // @Param('id') id: string
+  @Get()
+  findAll() {
+    return this.projectsService.findAll();
+  }
 
-  // To pass payload body
-  // @Body() payload: ProjectPayload
+  @Get(':id')
+  findOne(@Param('id') id: string) {
+    return this.projectsService.findOne(+id);
+  }
 
-  // To add child path in the route
-  // @Get('active')
-  // Output: projects/active
+  @Patch(':id')
+  update(@Param('id') id: string, @Body() updateProjectDto: UpdateProjectDto) {
+    return this.projectsService.update(+id, updateProjectDto);
+  }
 
-  // @Get()
-  // getProjects(): any {
-  //   return 'list of projects';
-  // }
-
-  // @Get(':id')
-  // getProjectById(@Param('id') id: string): any {
-  //   return `project with id ${id}`;
-  // }
+  @Delete(':id')
+  remove(@Param('id') id: string) {
+    return this.projectsService.remove(+id);
+  }
 }
