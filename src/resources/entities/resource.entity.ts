@@ -21,12 +21,12 @@ export class Resource extends BaseEntity {
   @CreateDateColumn({ name: 'created_at', type: 'timestamptz', default: () => 'CURRENT_TIMESTAMP' })
   createdAt: Date;
 
-  @Column({ name: 'createdBy', type: 'uuid' })
+  @Column({ name: 'created_by', type: 'uuid' })
   createdBy: string;
 
   @UpdateDateColumn({ name: 'updated_at', type: 'timestamptz', default: () => 'CURRENT_TIMESTAMP' })
   updatedAt: Date;
 
-  @Column({ name: 'updatedBy', type: 'uuid' })
+  @Column({ name: 'updated_by', type: 'uuid' })
   updatedBy: string;
 }

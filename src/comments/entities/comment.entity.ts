@@ -13,15 +13,15 @@ export class Comment extends BaseEntity {
   id: string;
 
   // Project level comment
-  @Column({ name: 'projecId', type: 'uuid' })
+  @Column({ name: 'project_id', type: 'uuid' })
   projectId: string;
 
   // Card level comment
-  @Column({ name: 'cardId', type: 'uuid', nullable: true })
+  @Column({ name: 'card_id', type: 'uuid', nullable: true })
   cardId?: string;
 
   // For replying in a comment
-  @Column({ name: 'commentId', type: 'uuid', nullable: true })
+  @Column({ name: 'comment_id', type: 'uuid', nullable: true })
   commentId?: string;
 
   @Column({ name: 'comment', type: 'varchar' })
@@ -30,12 +30,12 @@ export class Comment extends BaseEntity {
   @CreateDateColumn({ name: 'created_at', type: 'timestamptz', default: () => 'CURRENT_TIMESTAMP' })
   createdAt: Date;
 
-  @Column({ name: 'createdBy', type: 'uuid' })
+  @Column({ name: 'created_by', type: 'uuid' })
   createdBy: string;
 
   @UpdateDateColumn({ name: 'updated_at', type: 'timestamptz', default: () => 'CURRENT_TIMESTAMP' })
   updatedAt: Date;
 
-  @Column({ name: 'updatedBy', type: 'uuid' })
+  @Column({ name: 'updated_by', type: 'uuid' })
   updatedBy: string;
 }
