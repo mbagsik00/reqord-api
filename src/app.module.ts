@@ -1,28 +1,31 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Connection } from 'typeorm';
-import { Project } from './projects/project.entity';
+import { UsersModule } from './users/users.module';
 import { ProjectsModule } from './projects/projects.module';
+import { CardsModule } from './cards/cards.module';
+import { CommentsModule } from './comments/comments.module';
+import { TagsModule } from './tags/tags.module';
+import { ResourcesModule } from './resources/resources.module';
 
 @Module({
   imports: [
-    // Setup environment variables
-    // Research how db migrations work for typeorm
     TypeOrmModule.forRoot({
       type: 'postgres',
-      host: 'localhost',
-      port: 5432,
-      username: 'reqord',
-      password: 'p@ssw0rd',
-      database: 'reqord',
-      entities: [Project],
-      autoLoadEntities: true,
-      // migrationsRun: true
-      // synchronize: true, // should not be used in production
+      host: process.env.DB_HOST,
+      port: parseInt(process.env.DB_PORT),
+      username: process.env.DB_USERNAME,
+      password: process.env.DB_PASSWORD,
+      database: process.env.DB_DATABASE,
+      entities: [__dirname + '/**/*.entity{.ts,.js}'],
+      // Synchronize only for development phase not for prod
+      synchronize: process.env.DB_SYNCHRONIZE === 'true'
     }),
-    ProjectsModule
+    UsersModule,
+    ProjectsModule,
+    CardsModule,
+    CommentsModule,
+    TagsModule,
+    ResourcesModule
   ]
 })
-export class AppModule {
-  constructor(private connection: Connection) {}
-}
+export class AppModule {}

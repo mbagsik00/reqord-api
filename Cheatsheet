@@ -28,18 +28,72 @@ Notes:
    3. Database username and password
 
 Sample ormconfig
-   export = {
-      type: 'postgres' as const,
-      url: process.env.DATABASE_URL,
-      entities: ['src/server/app/**/*.entity.ts'],
-      migrations: ['src/server/migration/*.{ts,js}'],
-      cli: {
-         migrationsDir: 'src/server/migration',
-      },
-      extra: {
-         ssl:
-            process.env.NODE_ENV === 'production'
-            ? { rejectUnauthorized: false }
-            : false,
-      },
-   };
+   % export = {
+   %    type: 'postgres' as const,
+   %    url: process.env.DATABASE_URL,
+   %    entities: ['src/server/app/**/*.entity.ts'],
+   %    migrations: ['src/server/migration/*.{ts,js}'],
+   %    cli: {
+   %       migrationsDir: 'src/server/migration',
+   %    },
+   %    extra: {
+   %       ssl:
+   %          process.env.NODE_ENV === 'production'
+   %          ? { rejectUnauthorized: false }
+   %          : false,
+   %    },
+   % };
+
+Sample Entity
+
+% import { ApiProperty } from '@nestjs/swagger';
+% import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+
+% // TODO: Update to correct types
+% interface ProjectData {
+%   cards: string[];
+%   comments: string[];
+%   team_members: string[];
+% }
+
+% @Entity()
+% export class Project {
+%   @PrimaryGeneratedColumn()
+%   id: number;
+
+%   @ApiProperty()
+%   @Column()
+%   title: string;
+
+%   @ApiProperty()
+%   @Column()
+%   description: string;
+
+%   @ApiProperty()
+%   @Column()
+%   repository: string;
+
+%   @ApiProperty()
+%   @Column('simple-array')
+%   tags: string[];
+
+%   @ApiProperty()
+%   @Column('simple-json')
+%   data: ProjectData;
+
+%   @ApiProperty()
+%   @Column()
+%   createdBy: string;
+
+%   @ApiProperty()
+%   @Column()
+%   createdDate: string;
+
+%   @ApiProperty()
+%   @Column()
+%   modifiedBy: string;
+
+%   @ApiProperty()
+%   @Column()
+%   modifiedDate: string;
+% }
