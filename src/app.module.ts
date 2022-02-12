@@ -6,6 +6,8 @@ import { CardsModule } from './cards/cards.module';
 import { CommentsModule } from './comments/comments.module';
 import { TagsModule } from './tags/tags.module';
 import { ResourcesModule } from './resources/resources.module';
+import { Connection } from 'typeorm';
+import { CommentLikesModule } from './comment-likes/comment-likes.module';
 
 @Module({
   imports: [
@@ -17,15 +19,20 @@ import { ResourcesModule } from './resources/resources.module';
       password: process.env.DB_PASSWORD,
       database: process.env.DB_DATABASE,
       entities: [__dirname + '/**/*.entity{.ts,.js}'],
+      autoLoadEntities: true,
       // Synchronize only for development phase not for prod
       synchronize: process.env.DB_SYNCHRONIZE === 'true'
+      // migrations: ['src/migration/*{.ts,.js}']
     }),
     UsersModule,
     ProjectsModule,
     CardsModule,
     CommentsModule,
     TagsModule,
-    ResourcesModule
+    ResourcesModule,
+    CommentLikesModule
   ]
 })
-export class AppModule {}
+export class AppModule {
+  constructor(private connection: Connection) {}
+}
