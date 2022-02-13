@@ -11,6 +11,7 @@ export class CommentsController {
 
   @Post()
   create(@Body() createCommentDto: CreateCommentDto) {
+    // TODO: update createdBy and updatedBy using userId
     return this.commentsService.create(createCommentDto);
   }
 
@@ -21,16 +22,17 @@ export class CommentsController {
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.commentsService.findOne(+id);
+    return this.commentsService.findOne(id);
   }
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateCommentDto: UpdateCommentDto) {
-    return this.commentsService.update(+id, updateCommentDto);
+    // TODO: update updateBy using userId
+    return this.commentsService.update(id, updateCommentDto);
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.commentsService.remove(+id);
+    return this.commentsService.remove(id);
   }
 }
