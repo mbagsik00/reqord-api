@@ -7,6 +7,10 @@ import {
   CreateDateColumn
 } from 'typeorm';
 
+export enum ResourceType {
+  LINK = 'Link'
+}
+
 @Entity()
 export class Resource extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')

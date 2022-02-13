@@ -1,26 +1,53 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 import { CreateResourceDto } from './dto/create-resource.dto';
 import { UpdateResourceDto } from './dto/update-resource.dto';
+import { Resource } from './entities/resource.entity';
 
 @Injectable()
 export class ResourcesService {
-  create(createResourceDto: CreateResourceDto) {
-    return 'This action adds a new resource';
+  constructor(@InjectRepository(Resource) private readonly repository: Repository<Resource>) {}
+
+  create(createResourceDto: CreateResourceDto): Promise<Resource> {
+    const resource = this.repository.create(createResourceDto);
+    return this.repository.save(resource);
   }
 
-  findAll() {
-    return `This action returns all resources`;
+  findAll(): Promise<Resource[]> {
+    return this.repository.find();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} resource`;
+  async findOne(id: string): Promise<Resource> {
+    const resource = await this.repository.findOne(id);
+
+    if (!resource) {
+      throw new NotFoundException(`Resource with id ${id} not found`);
+    }
+
+    return resource;
   }
 
-  update(id: number, updateResourceDto: UpdateResourceDto) {
-    return `This action updates a #${id} resource`;
+  async update(id: string, updateResourceDto: UpdateResourceDto): Promise<Resource> {
+    const resource = await this.repository.preload({
+      id,
+      ...updateResourceDto
+    });
+
+    if (!resource) {
+      throw new NotFoundException(`Resource with id ${id} not found`);
+    }
+
+    return this.repository.save(resource);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} resource`;
+  async remove(id: string): Promise<Resource> {
+    const resource = await this.findOne(id);
+
+    if (!resource) {
+      throw new NotFoundException(`Resource with id ${id} not found`);
+    }
+
+    return this.repository.remove(resource);
   }
 }

@@ -1,26 +1,46 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 import { CreateCommentLikeDto } from './dto/create-comment-like.dto';
-import { UpdateCommentLikeDto } from './dto/update-comment-like.dto';
+import { CommentLike } from './entities/comment-like.entity';
+// import { UpdateCommentLikeDto } from './dto/update-comment-like.dto';
 
 @Injectable()
 export class CommentLikesService {
-  create(createCommentLikeDto: CreateCommentLikeDto) {
-    return 'This action adds a new commentLike';
+  constructor(
+    @InjectRepository(CommentLike) private readonly repository: Repository<CommentLike>
+  ) {}
+
+  create(createCommentLikeDto: CreateCommentLikeDto): Promise<CommentLike> {
+    const commentLike = this.repository.create(createCommentLikeDto);
+    return this.repository.save(commentLike);
   }
 
-  findAll() {
-    return `This action returns all commentLikes`;
+  findAll(): Promise<CommentLike[]> {
+    return this.repository.find();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} commentLike`;
+  async findOne(id: string): Promise<CommentLike> {
+    const commentLike = await this.repository.findOne(id);
+
+    if (!commentLike) {
+      throw new NotFoundException(`Comment Like with id ${id} not found`);
+    }
+
+    return commentLike;
   }
 
-  update(id: number, updateCommentLikeDto: UpdateCommentLikeDto) {
-    return `This action updates a #${id} commentLike`;
-  }
+  // update(id: string, updateCommentLikeDto: UpdateCommentLikeDto) {
+  //   return `This action updates a #${id} commentLike`;
+  // }
 
-  remove(id: number) {
-    return `This action removes a #${id} commentLike`;
+  async remove(id: string): Promise<CommentLike> {
+    const commentLink = await this.findOne(id);
+
+    if (!commentLink) {
+      throw new NotFoundException(`Comment Like with id ${id} not found`);
+    }
+
+    return this.repository.remove(commentLink);
   }
 }

@@ -1,7 +1,7 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
 import { CommentLikesService } from './comment-likes.service';
 import { CreateCommentLikeDto } from './dto/create-comment-like.dto';
-import { UpdateCommentLikeDto } from './dto/update-comment-like.dto';
+// import { UpdateCommentLikeDto } from './dto/update-comment-like.dto';
 
 @Controller('comment-likes')
 export class CommentLikesController {
@@ -19,16 +19,16 @@ export class CommentLikesController {
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.commentLikesService.findOne(+id);
+    return this.commentLikesService.findOne(id);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateCommentLikeDto: UpdateCommentLikeDto) {
-    return this.commentLikesService.update(+id, updateCommentLikeDto);
-  }
+  // @Patch(':id')
+  // update(@Param('id') id: string, @Body() updateCommentLikeDto: UpdateCommentLikeDto) {
+  //   return this.commentLikesService.update(id, updateCommentLikeDto);
+  // }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.commentLikesService.remove(+id);
+    return this.commentLikesService.remove(id);
   }
 }
