@@ -7,6 +7,13 @@ import {
   CreateDateColumn
 } from 'typeorm';
 
+export enum ProjectStatus {
+  NEW = 'New',
+  IN_PROGRESS = 'InProgress',
+  ON_HOLD = 'OnHold',
+  ARCHIVED = 'Archived'
+}
+
 @Entity()
 export class Project extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
@@ -18,8 +25,8 @@ export class Project extends BaseEntity {
   @Column({ name: 'description', type: 'varchar', nullable: true })
   description?: string;
 
-  @Column({ name: 'status', type: 'varchar', nullable: true })
-  status?: string;
+  @Column({ name: 'status', type: 'varchar', default: ProjectStatus.NEW })
+  status: string;
 
   @Column({ name: 'repository_link', type: 'varchar', nullable: true })
   repositoryLink?: string;
