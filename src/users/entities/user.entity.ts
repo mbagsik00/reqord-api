@@ -7,12 +7,12 @@ import {
   CreateDateColumn
 } from 'typeorm';
 
-enum UserStatus {
+export enum UserStatus {
   ACTIVE = 'Active',
   INACTIVE = 'Inactive'
 }
 
-enum UserRoles {
+export enum UserRoles {
   ADMIN = 'Admin',
   USER = 'User'
 }
