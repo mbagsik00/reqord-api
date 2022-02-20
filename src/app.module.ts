@@ -8,6 +8,7 @@ import { TagsModule } from './tags/tags.module';
 import { ResourcesModule } from './resources/resources.module';
 import { Connection } from 'typeorm';
 import { CommentLikesModule } from './comment-likes/comment-likes.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -30,7 +31,8 @@ import { CommentLikesModule } from './comment-likes/comment-likes.module';
     CommentsModule,
     TagsModule,
     ResourcesModule,
-    CommentLikesModule
+    CommentLikesModule,
+    AuthModule
   ]
 })
 export class AppModule {

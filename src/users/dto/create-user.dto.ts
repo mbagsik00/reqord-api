@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsBoolean, IsEmail, IsNotEmpty, IsOptional, IsString, IsUUID } from 'class-validator';
+import { IsEmail, IsNotEmpty, IsOptional, IsString } from 'class-validator';
 import { UserRoles, UserStatus } from '../entities/user.entity';
 
 export class CreateUserDto {
@@ -23,10 +23,6 @@ export class CreateUserDto {
   @ApiProperty()
   email: string;
 
-  @IsBoolean()
-  @ApiProperty()
-  verified: boolean;
-
   @IsString()
   @ApiProperty({
     enum: UserRoles,
@@ -39,18 +35,7 @@ export class CreateUserDto {
   @ApiProperty()
   image?: string;
 
-  @IsString()
-  @ApiProperty({
-    enum: UserStatus,
-    default: UserStatus.ACTIVE
-  })
   status: UserStatus;
-
-  @IsUUID()
-  @IsNotEmpty()
   createdBy: string;
-
-  @IsUUID()
-  @IsNotEmpty()
   updatedBy: string;
 }

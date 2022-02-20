@@ -12,8 +12,8 @@ export class UsersController {
   @Post()
   create(@Body() createUserDto: CreateUserDto) {
     // TODO: update createdBy and updateBy using userId
-    // TODO: Password encryption using bcrypt with salt
     // TODO: Authentication using passport strategy
+
     return this.usersService.create(createUserDto);
   }
 

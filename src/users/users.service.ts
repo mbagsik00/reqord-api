@@ -3,18 +3,38 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { User } from './entities/user.entity';
+import { User, UserStatus } from './entities/user.entity';
+import * as bcrypt from 'bcrypt';
 
+interface UsersQuery {
+  email?: string;
+}
 @Injectable()
 export class UsersService {
   constructor(@InjectRepository(User) private readonly repository: Repository<User>) {}
 
-  create(createUserDto: CreateUserDto): Promise<User> {
+  async create(createUserDto: CreateUserDto): Promise<User> {
     const user = this.repository.create(createUserDto);
+
+    const saltRounds = 10;
+    const passwordHash = await bcrypt.hash(user.password, saltRounds);
+
+    user.status = UserStatus.ACTIVE;
+    user.password = passwordHash;
+
+    // TODO: FIXME: User userId in the token for this
+    user.createdBy = 'ef586f15-687b-4bd3-ba07-a6a6e52b243d';
+    user.updatedBy = 'ef586f15-687b-4bd3-ba07-a6a6e52b243d';
+
+    // TODO: Map return data
     return this.repository.save(user);
   }
 
-  findAll(): Promise<User[]> {
+  findAll(query?: UsersQuery): Promise<User[]> {
+    if (query) {
+      return this.repository.find({ where: query });
+    }
+
     return this.repository.find();
   }
 
