@@ -17,6 +17,17 @@ async function bootstrap() {
     .setTitle('Reqord')
     .setDescription('The list of API resources for Reqord App')
     .setVersion('1.0')
+    .addBearerAuth(
+      {
+        name: 'Authorization',
+        bearerFormat: 'Bearer',
+        scheme: 'Bearer',
+        type: 'http',
+        in: 'Header'
+      },
+      // This name here is important for matching up with @ApiBearerAuth() in your controller!
+      'access-token'
+    )
     .build();
 
   const document = SwaggerModule.createDocument(app, config);
