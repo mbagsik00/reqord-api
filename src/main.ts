@@ -3,15 +3,21 @@ import { NestFactory } from '@nestjs/core';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { AppModule } from './app.module';
 import helmet from 'helmet';
+import * as cookieParser from 'cookie-parser';
 // import * as csurf from 'csurf';
 
 async function bootstrap() {
-  // TODO: Add rate limiting
-  const app = await NestFactory.create(AppModule, { cors: true });
+  const app = await NestFactory.create(AppModule);
 
+  // TODO: Update this to correct web origin
+  app.enableCors({
+    origin: 'http://localhost:8080',
+    credentials: true
+  });
+  app.use(cookieParser());
   app.useGlobalPipes(new ValidationPipe());
   app.use(helmet());
-  // app.use(csurf());
+  // app.use(csurf({ cookie: true }));
 
   const config = new DocumentBuilder()
     .setTitle('Reqord')

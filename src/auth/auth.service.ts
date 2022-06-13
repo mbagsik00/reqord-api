@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException, ForbiddenException } from '@nestjs/common';
+import { Injectable, BadRequestException } from '@nestjs/common';
 import { UsersService } from '../users/users.service';
 import { LoginAuthDto } from './dto/login-auth.dto';
 import { JwtService } from '@nestjs/jwt';
@@ -12,7 +12,7 @@ export class AuthService {
     const usersResult = await this.usersService.findAll({ email: loginAuthDto.email });
 
     if (!usersResult.length) {
-      throw new NotFoundException(`User not found with email ${loginAuthDto.email}`);
+      throw new BadRequestException('Incorrect username or password');
     }
 
     const user = usersResult[0];
@@ -20,7 +20,7 @@ export class AuthService {
     const isMatch = await bcrypt.compare(loginAuthDto.password, user.password);
 
     if (!isMatch) {
-      throw new ForbiddenException('Incorrect Password');
+      throw new BadRequestException('Incorrect username or password');
     }
 
     const jwtPayload = {

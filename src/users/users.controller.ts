@@ -13,6 +13,7 @@ export class UsersController {
   create(@Body() createUserDto: CreateUserDto) {
     // TODO: update createdBy and updateBy using userId
     // TODO: Authentication using passport strategy
+    // TODO: Default value for status, created, and updated
 
     return this.usersService.create(createUserDto);
   }
