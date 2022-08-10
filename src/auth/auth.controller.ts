@@ -1,20 +1,11 @@
-import {
-  Controller,
-  Post,
-  Body,
-  UseGuards,
-  Get,
-  Res,
-  Req,
-  UnauthorizedException
-} from '@nestjs/common';
+import { Controller, Post, Body, Get, Res, Req, UnauthorizedException } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { AuthService } from './auth.service';
 import { LoginAuthDto } from './dto/login-auth.dto';
-import { JwtAuthGuard } from './jwt-auth.guard';
 import { Request, Response } from 'express';
 import { JwtService } from '@nestjs/jwt';
 import { UsersService } from '../users/users.service';
+import { Public } from '../common/decorators/publicEndpoint.decorator';
 
 @ApiTags('Auth')
 @Controller('auth')
@@ -25,6 +16,7 @@ export class AuthController {
     private readonly userService: UsersService
   ) {}
 
+  @Public()
   @Post('login')
   async login(@Body() createAuthDto: LoginAuthDto, @Res({ passthrough: true }) response: Response) {
     const jwt = await this.authService.login(createAuthDto);
@@ -36,6 +28,7 @@ export class AuthController {
     };
   }
 
+  @Public()
   @Post('logout')
   logout(@Res({ passthrough: true }) response: Response) {
     response.clearCookie('authorization');
@@ -45,9 +38,7 @@ export class AuthController {
     };
   }
 
-  // TODO: Global guards
   @ApiBearerAuth('access-token')
-  @UseGuards(JwtAuthGuard)
   @Get('profile')
   async getProfile(@Req() request: Request) {
     try {
